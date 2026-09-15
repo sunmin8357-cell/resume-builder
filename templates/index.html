@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 이력서 & 포트폴리오 생성기</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- 상단 헤더 -->
+        <header class="app-header">
+            <h1>AI 이력서 & 포트폴리오 생성기</h1>
+            <p>지원자 정보와 프로젝트 경험을 입력하면 Gemini AI가 전문적인 이력서와 포트폴리오 초안을 생성해 드립니다.</p>
+        </header>
+
+        <!-- 메인 2열 그리드 -->
+        <main class="main-grid">
+            <!-- 좌측: 입력 폼 카드 -->
+            <section class="card">
+                <h2>📝 지원자 정보 입력</h2>
+
+                <!-- 에러 알림 상자 -->
+                <div id="errorAlert" class="alert alert-error hidden"></div>
+
+                <form id="resumeForm">
+                    <div class="form-group">
+                        <label for="name">이름 <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" placeholder="예: 홍길동" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="job_title">지원 직무 <span class="required">*</span></label>
+                        <input type="text" id="job_title" name="job_title" placeholder="예: 백엔드 개발자, 데이터 엔지니어 등" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tone">문서 톤앤매너</label>
+                        <select id="tone" name="tone">
+                            <option value="전문적이고 신뢰감 있는" selected>전문적이고 신뢰감 있는</option>
+                            <option value="열정적이고 도전적인">열정적이고 도전적인</option>
+                            <option value="간결하고 명확한">간결하고 명확한</option>
+                            <option value="친근하면서도 정중한">친근하면서도 정중한</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>생성 모드 (프롬프트 전략)</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="prompt_type" value="A" checked>
+                                <span><strong>일반 모드</strong> - 균형 잡힌 표준 이력서 & 포트폴리오</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="prompt_type" value="B">
+                                <span><strong>전문가 모드</strong> - STAR 기법 및 정량적 성과 중심 심화 구성</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">경력 사항 <span class="required">*</span></label>
+                        <textarea id="experience" name="experience" rows="5" placeholder="근무 회사, 담당 업무, 재직 기간, 주요 역할 등을 입력하세요." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projects">프로젝트 경험 <span class="required">*</span></label>
+                        <textarea id="projects" name="projects" rows="6" placeholder="프로젝트명, 개발 기간, 기술 스택, 핵심 문제 해결 사례 및 성과를 입력하세요." required></textarea>
+                    </div>
+
+                    <button type="submit" id="generateBtn" class="btn btn-primary">
+                        <span class="btn-text">✨ AI로 이력서 & 포트폴리오 생성</span>
+                    </button>
+                </form>
+            </section>
+
+            <!-- 우측: 결과 미리보기 카드 -->
+            <section class="card">
+                <div class="result-header">
+                    <h2>📄 생성 결과</h2>
+                    <div id="actionButtons" class="action-buttons hidden">
+                        <button type="button" id="copyBtn" class="btn btn-secondary">📋 복사</button>
+                        <button type="button" id="downloadBtn" class="btn btn-secondary">💾 마크다운 다운로드</button>
+                    </div>
+                </div>
+
+                <!-- 초기 대기 상태 -->
+                <div id="resultPlaceholder" class="placeholder-text">
+                    <p>좌측 폼을 작성하고 생성 버튼을 누르면<br>이곳에 AI가 작성한 이력서와 포트폴리오가 표시됩니다.</p>
+                </div>
+
+                <!-- 로딩 상태 -->
+                <div id="loadingStatus" class="loading-box hidden">
+                    <div class="loader"></div>
+                    <p>AI가 맞춤형 이력서와 포트폴리오를 작성하고 있습니다...<br><span style="font-size: 0.85rem; color: #a0aec0;">(수십 초 정도 소요될 수 있습니다)</span></p>
+                </div>
+
+                <!-- 마크다운 결과 출력 영역 -->
+                <div id="resultContent" class="markdown-preview hidden"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
