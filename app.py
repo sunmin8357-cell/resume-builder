@@ -22,8 +22,9 @@ app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', 'default-dev-secret-key
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-@app.route('/')
-def index():
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def index(path=''):
     return render_template('index.html')
 
 @app.route('/sw.js')
