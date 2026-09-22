@@ -25,6 +25,10 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def index(path=''):
+    if path.startswith('static/'):
+        return app.send_static_file(path[len('static/'):])
+    if path == 'sw.js':
+        return app.send_static_file('sw.js')
     return render_template('index.html')
 
 @app.route('/sw.js')
