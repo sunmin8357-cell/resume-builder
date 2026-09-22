@@ -1,4 +1,4 @@
-﻿import os
+import os
 import logging
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
@@ -20,6 +20,11 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/sw.js')
+def service_worker():
+    return app.send_static_file('sw.js')
+
 
 @app.route('/generate', methods=['POST'])
 def generate():
